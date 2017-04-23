@@ -16,6 +16,7 @@ fpsController = pg.time.Clock()
 #important variables
 snakePos = [100,50]
 snakeBody = [[100,50],[90,50],[80,50]]
+score = 0
 
 foodPos = [random.randrange(1,72)*10,random.randrange(1,46)*10]
 foodSpawn = True
@@ -31,12 +32,23 @@ def gameOver():
     gameOverRect.midtop = (360,15)
     playSurface.blit(gameOverSurface,gameOverRect)
     pg.display.flip()
+    showScore(0)
     time.sleep(4)
     pg.quit()
     sys.exit()
 
 #main logic
-
+def showScore(ch=1):
+    sFont = pg.font.SysFont("monaco", 30)
+    Ssurf = sFont.render("Score : "+str(score),True,BLACK)
+    sRect = Ssurf.get_rect()
+    if ch == 1:
+        sRect.midtop = (80,10)
+    else:
+        sRect.midtop = (360,120)
+    playSurface.blit(Ssurf, sRect)
+    pg.display.flip()
+    fpsController.tick(60)
 while(True):
     for event in pg.event.get():
         if(event.type == pg.QUIT):
@@ -75,6 +87,7 @@ while(True):
     #snake body grow mechanism
     snakeBody.insert(0, list(snakePos))
     if snakePos[0] == foodPos [0] and snakePos [1] == foodPos[1]:
+        score += 1
         foodSpawn = False
     else:
         snakeBody.pop()
@@ -83,12 +96,21 @@ while(True):
         foodPos = [random.randrange(1, 72) * 10, random.randrange(1, 46) * 10]
     foodSpawn = True
 
-    playSurface.fill(BLUE)
+    playSurface.fill(WHITE)
     for pos in snakeBody:
         pg.draw.rect(playSurface,GREEN,pg.Rect(pos[0],pos[1],10,10))
 
     pg.draw.rect(playSurface,RED,pg.Rect(foodPos[0],foodPos[1],10,10))
 
+    if snakePos[0]>710 or snakePos[0] <0:
+        gameOver()
+    if snakePos[1]>450 or snakePos[1]<0:
+        gameOver()
+
+    for block in snakeBody[1:]:
+        if snakePos[0]==block[0] and snakePos[1] == block[1]:
+            gameOver()
 
     pg.display.flip()
+    showScore()
     fpsController.tick(25)
