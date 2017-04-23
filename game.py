@@ -18,6 +18,7 @@ snakePos = [100,50]
 snakeBody = [[100,50],[90,50],[80,50]]
 
 foodPos = [random.randrange(1,72)*10,random.randrange(1,46)*10]
+foodSpawn = True
 
 direction = "RIGHT"
 changeto = direction
@@ -43,30 +44,51 @@ while(True):
             sys.exit()
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_RIGHT or event.key == ord("d"):
-                changeto = "RIGHT"
-            if event.key == pg.K_RIGHT or event.key == ord("a"):
-                changeto = "LEFT"
-            if event.key == pg.K_RIGHT or event.key == ord("w"):
-                changeto = "LEFT"
-            if event.key == pg.K_RIGHT or event.key == ord("s"):
-                changeto = "DOWN"
-            if event.key == pg.K_ESCAPE:
+                changeto = 'RIGHT'
+            elif event.key == pg.K_LEFT or event.key == ord("a"):
+                changeto = 'LEFT'
+            elif event.key == pg.K_UP or event.key == ord("w"):
+                changeto = 'UP'
+            elif event.key == pg.K_DOWN or event.key == ord("s"):
+                changeto = 'DOWN'
+            elif event.key == pg.K_ESCAPE:
                 pg.event.post(pg.event.Event(pg.QUIT))
     #validation of Direction
-    if changeto == "RIGHT" and not direction == "LEFT":
-        direction="RIGHT"
-    if changeto == "LEFT" and not direction == "RIGHT":
-        direction == "LEFT"
-    if changeto == "UP" and not direction == "DOWN":
-        direction="UP"
-    if changeto == "DOWN" and not direction == "UP":
-        direction == "DOWN"
-#Moving snake
-    if direction == "RIGHT":
-        snakePos[0] = snakePos [0] + 10
-    if direction == "LEFT":
-        snakePos[0] = snakePos [0] - 10
-    if direction == "UP":
-        snakePos[1] = snakePos [0] + 10
-    if direction == "DOWN":
-        snakePos[1] = snakePos [0] - 10
+    if changeto == 'RIGHT' and not direction == 'LEFT':
+        direction='RIGHT'
+    elif changeto == 'LEFT'and not direction == 'RIGHT':
+        direction = 'LEFT'
+    elif changeto == 'UP' and not direction == 'DOWN':
+        direction='UP'
+    elif changeto == 'DOWN' and not direction == 'UP':
+        direction = 'DOWN'
+
+    if direction == 'RIGHT':
+        snakePos[0] += 10
+    if direction == 'LEFT':
+        snakePos[0] -= 10
+    if direction == 'UP':
+        snakePos[1] -= 10
+    if direction == 'DOWN':
+        snakePos[1] += 10
+
+    #snake body grow mechanism
+    snakeBody.insert(0, list(snakePos))
+    if snakePos[0] == foodPos [0] and snakePos [1] == foodPos[1]:
+        foodSpawn = False
+    else:
+        snakeBody.pop()
+
+    if foodSpawn == False:
+        foodPos = [random.randrange(1, 72) * 10, random.randrange(1, 46) * 10]
+    foodSpawn = True
+
+    playSurface.fill(BLUE)
+    for pos in snakeBody:
+        pg.draw.rect(playSurface,GREEN,pg.Rect(pos[0],pos[1],10,10))
+
+    pg.draw.rect(playSurface,RED,pg.Rect(foodPos[0],foodPos[1],10,10))
+
+
+    pg.display.flip()
+    fpsController.tick(25)
