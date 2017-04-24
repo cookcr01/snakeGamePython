@@ -31,8 +31,9 @@ def gameOver():
     gameOverRect = gameOverSurface.get_rect()
     gameOverRect.midtop = (360,15)
     playSurface.blit(gameOverSurface,gameOverRect)
-    pg.display.flip()
+
     showScore(0)
+    pg.display.flip()
     time.sleep(4)
     pg.quit()
     sys.exit()
@@ -47,8 +48,10 @@ def showScore(ch=1):
     else:
         sRect.midtop = (360,120)
     playSurface.blit(Ssurf, sRect)
-    pg.display.flip()
+
     fpsController.tick(60)
+
+
 while(True):
     for event in pg.event.get():
         if(event.type == pg.QUIT):
@@ -111,8 +114,7 @@ while(True):
         if snakePos[0]==block[0] and snakePos[1] == block[1]:
             gameOver()
 
-    pg.display.flip()
+
     showScore()
-
-
-    fpsController.tick(25)
+    pg.display.flip()
+    fpsController.tick(23)
