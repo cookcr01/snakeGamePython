@@ -6,7 +6,11 @@ from colors import *
 
 pg.init()
 
-
+file = "music.wav"
+file2 = "mario.wav"
+pg.mixer.init()
+sound = pg.mixer.Sound(file)
+soundDie = pg.mixer.Sound(file2)
 #play surface
 
 playSurface = pg.display.set_mode((720,460))
@@ -51,7 +55,7 @@ def showScore(ch=1):
 
     fpsController.tick(60)
 
-
+sound.play(100)
 while(True):
     for event in pg.event.get():
         if(event.type == pg.QUIT):
@@ -106,12 +110,18 @@ while(True):
     pg.draw.rect(playSurface,RED,pg.Rect(foodPos[0],foodPos[1],10,10))
 
     if snakePos[0]>710 or snakePos[0] <0:
+        sound.stop()
+        soundDie.play()
         gameOver()
     if snakePos[1]>450 or snakePos[1]<0:
+        sound.stop()
+        soundDie.play()
         gameOver()
 
     for block in snakeBody[1:]:
         if snakePos[0]==block[0] and snakePos[1] == block[1]:
+            sound.stop()
+            soundDie.play()
             gameOver()
 
 
