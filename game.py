@@ -39,7 +39,7 @@ changeto = direction
 def gameOver():
     global snakePos,snakeBody,foodPos,foodSpawn,direction,changeto,score,gameScreen
     myFont = pg.font.SysFont("monaco", 72)
-    gameOverSurface = myFont.render("Game Over", True, RED)
+    gameOverSurface = myFont.render("Game Over", True, BLUE)
     gameOverRect = gameOverSurface.get_rect()
     gameOverRect.midtop = (360,15)
     playSurface.blit(gameOverSurface,gameOverRect)
@@ -54,7 +54,7 @@ def gameOver():
     direction = "RIGHT"
     changeto = direction
     gameScreen = tkinter.Tk()
-    gameScreen.geometry('%dx%d+%d+%d' % (200, 50, 450, 250))
+    gameScreen.geometry('%dx%d+%d+%d' % (200, 50, 250, 250))
     gameScreen.resizable(width=False, height=False)
     gameScreen.title("Menu")
     b = tkinter.Button(gameScreen, text="New Game", command=game)
@@ -137,7 +137,7 @@ def game():
         for pos in snakeBody:
             pg.draw.rect(playSurface,GREEN,pg.Rect(pos[0],pos[1],10,10))
 
-        pg.draw.rect(playSurface,RED,pg.Rect(foodPos[0],foodPos[1],10,10))
+        pg.draw.rect(playSurface,RED_DARK,pg.Rect(foodPos[0],foodPos[1],10,10))
 
         if snakePos[0]>710 or snakePos[0] <0:
             sound.stop()
